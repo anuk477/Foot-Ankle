@@ -482,15 +482,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* --------------------------
-     Contact form alert
+     Contact form alert (demo only)
+     - Do NOT block forms that post to a real endpoint (e.g., FormSubmit)
   -------------------------- */
-  const contactForm = document.querySelector('.contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', e => {
-      e.preventDefault();
-      alert("Thanks! We'll be in touch shortly.");
-    });
-  }
+  const contactForms = document.querySelectorAll('.contact-form');
+  contactForms.forEach(form => {
+    const action = (form.getAttribute('action') || '').trim();
+    const isRealAction = /^https?:\/\//i.test(action) || action.startsWith('/');
+    if (!isRealAction) {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        alert("Thanks! We'll be in touch shortly.");
+      });
+    }
+  });
 
   /* --------------------------
      Embed Google Map in placeholder
